@@ -1,0 +1,58 @@
+version: '3'
+services:
+  influxdb:
+    image: influxdb:2.7
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+      - influxdb-config:/etc/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=admin123
+      - DOCKER_INFLUXDB_INIT_ORG=myorg
+      - DOCKER_INFLUXDB_INIT_BUCKET=iot_data
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-super-secret-admin-token
+    healthcheck:
+      test: [ "CMD", "influx", "ping" ]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  subscriber:
+    build: .
+    depends_on:
+      influxdb:
+        condition: service_healthy
+    volumes:
+      - ./emqxsl-ca.crt:/app/emqxsl-ca.crt:ro
+    environment:
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_TOKEN=my-super-secret-admin-token
+      - INFLUXDB_ORG=myorg
+      - INFLUXDB_BUCKET=iot_data
+      - MQTT_BROKER=jcddef63.ala.eu-central-1.emqxsl.com
+      - MQTT_PORT=8883
+      - MQTT_USERNAME=mqtt_user
+      - MQTT_PASSWORD=mqtt_pass
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      influxdb:
+        condition: service_healthy
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+
+volumes:
+  influxdb-data:
+  influxdb-config:
+  grafana-data:
