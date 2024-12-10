@@ -124,17 +124,17 @@ System wykorzystuje broker MQTT `jcddef63.ala.eu-central-1.emqxsl.com` z obsług
 ## Diagramy
 
 ### Ogólna architektura systemu
-![Ogólna architektura systemu](Ogólna architektura systemu.svg)
+![Ogólna architektura systemu](Ogólna_architektura_systemu.svg)
 *Diagram przedstawia ogólną architekturę systemu i połączenia między komponentami.*
 
 ### Przepływ danych
-![Przepływ danych](Przepływ danych.svg)
+![Przepływ danych](Przepływ_danych.svg)
 *Schemat przepływu danych między poszczególnymi elementami systemu.*
 
 ### Komponenty ESP8266
-![Komponenty ESP8266](Komponenty ESP8266.svg)
+![Komponenty ESP8266](Komponenty_ESP8266.svg)
 *Struktura komponentów wykorzystywanych w module ESP8266.*
 
 ### Struktura oprogramowania
-![Struktura oprogramowania](Struktura oprogramowania.svg)
+![Struktura oprogramowania](Struktura_oprogramowania.svg)
 *Diagram przedstawiający organizację oprogramowania w systemie.*
